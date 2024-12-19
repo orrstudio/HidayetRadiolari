@@ -1,0 +1,35 @@
+# Добавь правила и рекомендации для Cascade, 
+# которым нужно следовать в этом проекте.
+
+1. Speak to me in Russian 
+   # Говори со мной на русском.
+2. Do not change files without my approval. 
+   # Не изменяй файлы без моего разрешения.
+3. Do not introduce changes and innovations without agreeing with me. 
+   # Не вносите изменения и инновации без моего согласия.
+4. Do not delete comments in the code under any circumstances. 
+   # Не удаляй комментарии в коде во всех случаях.
+5. Do not delete pieces of code, parts of code without asking me. 
+   # Не удаляй части кода, части кода без моего согласия.
+6. Do not add anything to the code except what I asked you to. 
+   # Не добавляй в код ничего, кроме того, что я попросил.
+7. Do not make any additions to the code from yourself. 
+   # Не вносите никаких дополнений в код от себя.
+8. Follow only my instructions and no improvisations. 
+   # Следуйте только моим инструкциям и никаких импровизаций.
+9. Don't lie to me. 
+   # Не ври мне.
+10. When I ask you to analyze the code, be sure to analyze it and don't guess what could be. 
+    # Когда я попрошу вас проанализировать код, обязательно проанализируйте его, а не стройте догадки.
+11. Do not make any changes to the code without my approval. 
+    # Не вносите изменения в код без моего согласия.
+12. I use Arch Linux. 
+    # Я использую Arch Linux.
+13. I use Gnome. 
+    # Я использую Gnome.
+14. I use Python 3.12. 
+    # Я использую Python 3.12.
+15. I use Kivy version 2.3.0
+    # Я использую Kivy версии 2.3.0
+16. I use Virtualenv. 
+    # Я использую виртуальное окружение.

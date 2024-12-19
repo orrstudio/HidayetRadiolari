@@ -1,0 +1,41 @@
+# Bulldozer directory
+.buildozer/
+bin/
+
+# Virtual environment
+venv/
+
+# Build artifacts
+**/*.pyc
+**/*.pyo
+**/__pycache__/
+
+# Build logs
+build.log
+build-*.log
+build/
+build-*
+
+# Temporary files
+buildozer.log
+buildozer-*.log
+
+# IDE files
+.idea/
+.vscode/
+.windsurf/
+*.windsurf
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+
+# User settings and data
+*.db
+settings.db
+data/*.db
+
+# Project specific
+draft.md
