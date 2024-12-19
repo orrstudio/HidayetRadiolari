@@ -27,17 +27,17 @@ class HidayetPlayerApp(App):
             'HERAN KURAN HERAN MUTLULUK': 'http://ibrahimiptv.com:1935/herankuran/herankuran/playlist.m3u8',
             'HERAN KURAN HERAN ZİKİR': 'http://ibrahimiptv.com:1935/heranzikir/heranzikir/playlist.m3u8',
             'KURAN LAFZI VE 7 RUHU': 'http://ibrahimiptv.com:1935/kuran/kuran/playlist.m3u8',
-            'ABRAHAM TV ALMANCA': 'http://ibrahimiptv.com:1935/abraham/abraham/playlist.m3u8',
-            'ABRAHAM TV İNGİLİZCE': 'http://ibrahimiptv.com:1935/hak_en/hak_en/playlist.m3u8',
-            'ABRAHAM TV RUSÇA': 'http://ibrahimiptv.com:1935/hak_ru/hak_ru/playlist.m3u8',
-            'ABRAHAM TV ARAPÇA': 'http://ibrahimiptv.com:1935/hak_ar/hak_ar/playlist.m3u8',
-            'ABRAHAM TV KÜRTÇE': 'http://ibrahimiptv.com:1935/hak_kr/hak_kr/playlist.m3u8',
-            'ABRAHAM TV FRANSIZCA': 'http://ibrahimiptv.com:1935/hak_fr/hak_fr/playlist.m3u8',
-            'ABRAHAM TV İSPANYOLCA': 'http://ibrahimiptv.com:1935/hak_es/hak_es/playlist.m3u8',
-            'ABRAHAM TV ÇİNCE': 'http://ibrahimiptv.com:1935/hak_ch/hak_ch/playlist.m3u8',
-            'ABRAHAM TV BULGARCA': 'http://ibrahimiptv.com:1935/hak_bg/hak_bg/playlist.m3u8',
-            'ABRAHAM TV FLEMENKÇE': 'http://ibrahimiptv.com:1935/hak_ne/hak_ne/playlist.m3u8',
-            'ABRAHAM TV FARSÇA': 'http://ibrahimiptv.com:1935/hak_fa/hak_fa/playlist.m3u8',
+            'İBRAHİM TV ALMANCA': 'http://ibrahimiptv.com:1935/abraham/abraham/playlist.m3u8',
+            'İBRAHİM TV İNGİLİZCE': 'http://ibrahimiptv.com:1935/hak_en/hak_en/playlist.m3u8',
+            'İBRAHİM TV RUSÇA': 'http://ibrahimiptv.com:1935/hak_ru/hak_ru/playlist.m3u8',
+            'İBRAHİM TV ARAPÇA': 'http://ibrahimiptv.com:1935/hak_ar/hak_ar/playlist.m3u8',
+            'İBRAHİM TV KÜRTÇE': 'http://ibrahimiptv.com:1935/hak_kr/hak_kr/playlist.m3u8',
+            'İBRAHİM TV FRANSIZCA': 'http://ibrahimiptv.com:1935/hak_fr/hak_fr/playlist.m3u8',
+            'İBRAHİM TV İSPANYOLCA': 'http://ibrahimiptv.com:1935/hak_es/hak_es/playlist.m3u8',
+            'İBRAHİM TV ÇİNCE': 'http://ibrahimiptv.com:1935/hak_ch/hak_ch/playlist.m3u8',
+            'İBRAHİM TV BULGARCA': 'http://ibrahimiptv.com:1935/hak_bg/hak_bg/playlist.m3u8',
+            'İBRAHİM TV FLEMENKÇE': 'http://ibrahimiptv.com:1935/hak_ne/hak_ne/playlist.m3u8',
+            'İBRAHİM TV FARSÇA': 'http://ibrahimiptv.com:1935/hak_fa/hak_fa/playlist.m3u8',
         }
         self.current_player = None
         if platform == 'android':
@@ -109,18 +109,26 @@ class HidayetPlayerApp(App):
                     print(f"Ошибка при остановке предыдущего плеера: {e}")
 
     def play_stream(self, url):
-        print(f"Попытка воспроизведения потока: {url}")
+        print(f"[DEBUG] Попытка воспроизведения потока: {url}")
+        print(f"[DEBUG] Платформа: {platform}")
         try:
             # Останавливаем предыдущий плеер
+            print("[DEBUG] Останавливаем предыдущий плеер")
             self.stop_current_player()
 
             if platform == 'android':
+                print("[DEBUG] Инициализация Android MediaPlayer")
                 # Создаем новый MediaPlayer для Android
                 self.media_player = MediaPlayer()
+                print("[DEBUG] MediaPlayer создан")
+                print("[DEBUG] Устанавливаем источник данных")
                 self.media_player.setDataSource(url)
+                print("[DEBUG] Подготовка MediaPlayer")
                 self.media_player.prepare()
+                print("[DEBUG] MediaPlayer подготовлен")
+                print("[DEBUG] Запуск воспроизведения")
                 self.media_player.start()
-                print("Android MediaPlayer запущен")
+                print("[DEBUG] Android MediaPlayer запущен успешно")
             else:
                 # Создаем новый плеер для десктопа
                 self.current_player = Video(source=url)

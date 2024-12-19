@@ -35,8 +35,8 @@ version = 1.0.0
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
-# (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
+# (list) Application requirements comma separated e.g.
+# requirements = sqlite3,kivy
 requirements = python3, kivy==2.3.0, kivymd==1.2.0, pyjnius
 
 # (str) Custom source folders for requirements
@@ -94,7 +94,7 @@ fullscreen = 1
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,WAKE_LOCK
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,WAKE_LOCK,FOREGROUND_SERVICE
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
