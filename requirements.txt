@@ -4,3 +4,4 @@ buildozer==1.5.0
 setuptools==75.6.0
 cython==3.0.11
 pyjnius==1.6.1
+ffpyplayer==4.5.2
