@@ -22,7 +22,7 @@ class RadioPlayer(FloatLayout):
         super().__init__(**kwargs)
 
         # Фоновое изображение
-        self.add_widget(Image(source='background.jpg', fit_mode='fill'))
+        self.add_widget(Image(source='images/background.jpg', fit_mode='fill'))
 
         # Верхний текст состояния
         self.status_label = Label(text="Select a radio station", font_size=20, color=(1, 1, 1, 1),

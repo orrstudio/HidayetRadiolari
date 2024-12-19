@@ -1,0 +1,6 @@
+kivy==2.3.0
+kivymd==1.2.0
+buildozer==1.5.0
+setuptools==75.6.0
+cython==3.0.11
+pyjnius==1.6.1
