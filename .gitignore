@@ -22,9 +22,9 @@ buildozer-*.log
 
 # IDE files
 .idea/
-.vscode/
-.windsurf/
-*.windsurf
+# .vscode/
+# .windsurf/
+# *.windsurf
 *.sublime-project
 *.sublime-workspace
 *.swp
@@ -36,6 +36,3 @@ buildozer-*.log
 *.db
 settings.db
 data/*.db
-
-# Project specific
-draft.md

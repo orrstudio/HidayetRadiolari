@@ -1,0 +1,4 @@
+{
+    "python.defaultInterpreterPath": "/home/orr/GitHub/HidayetRadiolari/.venv/bin/python",
+    "python.analysis.typeCheckingMode": "basic"
+}
