@@ -1,5 +1,6 @@
-kivy
-buildozer
-cython
-pyjnius
-ffpyplayer
+python==3.11.7
+kivy==2.3.0
+kivymd==1.2.0
+requests==2.32.3
+pyjnius==1.6.1
+Cython==3.0.11
