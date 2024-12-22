@@ -582,10 +582,10 @@ download_system_deps() {
     
     # Список зависимостей для загрузки
     local deps=(
-        "sdl2:https://libsdl.org/release/SDL2-2.28.5.tar.xz"
-        "sdl2_image:https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.xz"
+        "sdl2:https://libsdl.org/release/SDL2-2.28.5.tar.gz"
+        "sdl2_image:https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.gz"
         "sdl2_mixer:https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.0/SDL2_mixer-2.6.0.tar.xz"
-        "sdl2_ttf:https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.20.2.tar.xz"
+        "sdl2_ttf:https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.20.2.tar.gz"
         "gstreamer:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gstreamer-1.0-android-universal-1.22.5.tar.xz"
         "gst-plugins-base:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gst-plugins-base-1.0-android-universal-1.22.5.tar.xz"
         "gst-plugins-good:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gst-plugins-good-1.0-android-universal-1.22.5.tar.xz"
@@ -620,7 +620,7 @@ download_system_deps() {
         fi
         
         # Распаковка файла
-        if [[ "$dep_name" == "gstreamer" || "$dep_name" == "gst-plugins-base" || "$dep_name" == "gst-plugins-good" ]]; then
+        if [[ "$dep_name" == "gstreamer" || "$dep_name" == "gst-plugins-base" || "$dep_name" == "gst-plugins-good" || "$dep_name" == "sdl2_mixer" ]]; then
             # Проверяем, что архив еще не распакован
             if [ ! -d "$deps_dir/$dep_name" ]; then
                 echo "Распаковываем $dep_name: $deps_dir/$dep_name.tar.xz"
@@ -634,8 +634,19 @@ download_system_deps() {
                 echo "✅ $dep_name уже распакован"
             fi
         else
-            if ! tar -xvf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir"; then
-                echo "❌ Ошибка: Не удалось распаковать $dep_name"
+            # Определяем тип архива
+            if [[ "$dep_link" == *".tar.gz" ]]; then
+                if ! tar -xzf "$deps_dir/$dep_name.tar.gz" -C "$deps_dir"; then
+                    echo "❌ Ошибка: Не удалось распаковать $dep_name.tar.gz"
+                    continue
+                fi
+            elif [[ "$dep_link" == *".tar.xz" ]]; then
+                if ! tar -xJf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir"; then
+                    echo "❌ Ошибка: Не удалось распаковать $dep_name.tar.xz"
+                    continue
+                fi
+            else
+                echo "❌ Неизвестный формат архива для $dep_name"
                 continue
             fi
         fi
