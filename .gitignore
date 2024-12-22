@@ -13,7 +13,6 @@ venv/
 # Build logs
 build.log
 build-*.log
-build/
 build-*
 
 # Temporary files
@@ -36,3 +35,8 @@ buildozer-*.log
 *.db
 settings.db
 data/*.db
+
+# Локальные инструменты и зависимости
+.local/
+.gradle/
+local.properties
