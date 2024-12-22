@@ -155,11 +155,16 @@ check_java() {
 setup_java() {
     info "Настраиваем пути Java..."
     
-    # Создаем директорию .gradle внутри проекта
-    mkdir -p "$PROJECT_ROOT/.gradle" || error "Не удалось создать директорию .gradle"
-    
     # Настраиваем gradle.properties внутри проекта
-    echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk" > "$PROJECT_ROOT/.gradle/gradle.properties" || \
+    local gradle_props_dir="$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists/${PROJECT_NAME}"
+    
+    # Проверяем и создаем директорию, если она не существует
+    [ ! -d "$gradle_props_dir" ] && {
+        mkdir -p "$gradle_props_dir" || \
+            error "Не удалось создать директорию для gradle.properties"
+    }
+    
+    echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk" > "$gradle_props_dir/gradle.properties" || \
         error "Не удалось создать файл gradle.properties"
     
     # Настраиваем local.properties внутри проекта
@@ -330,7 +335,7 @@ setup_venv() {
     info "Создание и настройка виртуального окружения..."
     
     # Определяем путь к виртуальному окружению
-    export VENV_DIR="$PROJECT_ROOT/.buildozer/local/venv"
+    export VENV_DIR="$PROJECT_ROOT/venv"
     export VIRTUAL_ENV="$VENV_DIR"
     
     # Создаем директорию для виртуального окружения, если она не существует
@@ -372,7 +377,7 @@ check_buildozer_spec() {
 
 # Настройка Gradle
 setup_gradle() {
-    info "Настраиваем Gradle..."
+    info "Настройка Gradle..."
     
     # Проверяем наличие GRADLE_HOME
     if [ -z "$GRADLE_HOME" ]; then
@@ -387,14 +392,20 @@ setup_gradle() {
     
     # Создаем gradle.properties внутри проекта если его нет
     local project_gradle_props="$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists/${PROJECT_NAME}/gradle.properties"
-    mkdir -p $(dirname "$project_gradle_props")
+    local gradlew_path="$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists/${PROJECT_NAME}/gradlew"
+    local gradle_dir="$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists/${PROJECT_NAME}"
     
-    {
-        echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk"
-    } > "$project_gradle_props" || error "Не удалось создать файл gradle.properties"
+    # Проверяем и создаем директории, если они не существуют
+    [ ! -d "$gradle_dir" ] && {
+        mkdir -p "$gradle_dir" || error "Не удалось создать директорию Gradle"
+    }
+    
+    # Проверяем и создаем gradle.properties
+    if [ ! -f "$project_gradle_props" ]; then
+        echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk" > "$project_gradle_props" || error "Не удалось создать файл gradle.properties"
+    fi
     
     # Проверяем наличие gradlew
-    local gradlew_path="$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists/${PROJECT_NAME}/gradlew"
     if [ -f "$gradlew_path" ]; then
         # Делаем gradlew исполняемым
         chmod +x "$gradlew_path" || error "Не удалось сделать gradlew исполняемым"
@@ -417,7 +428,7 @@ setup_gradle() {
 
 # Настройка Gradle для работы с Java 11
 setup_gradle_java() {
-    info "Настраиваем Gradle для работы с Java 11..."
+    info "Настройка Gradle для работы с Java 11..."
     
     # Путь к gradle.properties
     local gradle_props="$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists/${PROJECT_NAME}/gradle.properties"
@@ -461,7 +472,7 @@ clean_build() {
 
 # Настройка переменных окружения Android
 setup_android_env() {
-    info "Настраиваем переменные окружения Android..."
+    info "Настройка переменных окружения Android..."
     
     # Устанавливаем ANDROID_HOME
     export ANDROID_HOME="$PROJECT_ROOT/.buildozer/android/platform/android-sdk"
@@ -529,25 +540,34 @@ manual_system_deps() {
         "sdl2_ttf"
         "gstreamer"
         "gst-plugins-base"
-        "gst-plugins-good"
     )
     
     # Путь к директории с зависимостями
-    local deps_dir="$PROJECT_ROOT/.buildozer/android/platform/build-tools"
+    local deps_dir="$PROJECT_ROOT/.buildozer/system_deps"
     
     # Проверяем наличие директории
     mkdir -p "$deps_dir" || error "Не удалось создать директорию $deps_dir"
     
     # Проверяем наличие пакетов
     for dep in "${system_deps[@]}"; do
-        if [ -f "$deps_dir/$dep.tar.gz" ]; then
+        if [ -f "$deps_dir/$dep.tar.xz" ]; then
             info "Устанавливаем $dep..."
-            tar -xzf "$deps_dir/$dep.tar.gz" -C "$deps_dir" || error "Не удалось распаковать $dep"
+            tar -xvf "$deps_dir/$dep.tar.xz" -C "$deps_dir" || error "Не удалось распаковать $dep"
         else
             error "Отсутствует пакет $dep в $deps_dir"
             return 1
         fi
     done
+    
+    # Распаковка архива GStreamer
+    if [ -f "$deps_dir/gstreamer.tar.xz" ]; then
+        info "Устанавливаем gstreamer..."
+        tar -xvJf "$deps_dir/gstreamer.tar.xz" -C "$deps_dir" || {
+            error "Не удалось распаковать архив GStreamer"
+            return 1
+        }
+        success "Архив GStreamer успешно распакован"
+    fi
     
     success "Системные зависимости установлены вручную"
 }
@@ -557,16 +577,18 @@ download_system_deps() {
     info "Загружаем системные зависимости..."
     
     # Создаем директорию для загрузки и установки
-    local deps_dir="$PROJECT_ROOT/.buildozer/android/platform/build-tools"
+    local deps_dir="$PROJECT_ROOT/.buildozer/system_deps"
     mkdir -p "$deps_dir" || error "Не удалось создать директорию для зависимостей"
     
     # Список зависимостей для загрузки
     local deps=(
-        "sdl2:https://libsdl.org/release/SDL2-2.28.5.tar.gz"
-        "sdl2_image:https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.gz"
-        "sdl2_mixer:https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.0/SDL2_mixer-2.6.0.tar.gz"
-        "sdl2_ttf:https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.20.2.tar.gz"
+        "sdl2:https://libsdl.org/release/SDL2-2.28.5.tar.xz"
+        "sdl2_image:https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.xz"
+        "sdl2_mixer:https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.0/SDL2_mixer-2.6.0.tar.xz"
+        "sdl2_ttf:https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.20.2.tar.xz"
         "gstreamer:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gstreamer-1.0-android-universal-1.22.5.tar.xz"
+        "gst-plugins-base:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gst-plugins-base-1.0-android-universal-1.22.5.tar.xz"
+        "gst-plugins-good:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gst-plugins-good-1.0-android-universal-1.22.5.tar.xz"
     )
     
     # Создаем директорию для зависимостей, если она не существует
@@ -598,11 +620,11 @@ download_system_deps() {
         fi
         
         # Распаковка файла
-        if [[ "$dep_name" == "gstreamer" ]]; then
+        if [[ "$dep_name" == "gstreamer" || "$dep_name" == "gst-plugins-base" || "$dep_name" == "gst-plugins-good" ]]; then
             # Проверяем, что архив еще не распакован
-            if [ ! -d "$HOME/.local/share/system_deps/gstreamer" ]; then
-                echo "Распаковываем gstreamer: $deps_dir/$dep_name.tar.xz"
-                tar -xvJf "$deps_dir/$dep_name.tar.xz" -C "$HOME/.local/share/system_deps" || {
+            if [ ! -d "$deps_dir/$dep_name" ]; then
+                echo "Распаковываем $dep_name: $deps_dir/$dep_name.tar.xz"
+                tar -xvJf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir" || {
                     echo "❌ DETAILED ERROR: Код возврата $?"
                     echo "❌ Содержимое архива:"
                     tar -tvJf "$deps_dir/$dep_name.tar.xz"
@@ -612,7 +634,7 @@ download_system_deps() {
                 echo "✅ $dep_name уже распакован"
             fi
         else
-            if ! tar -xzf "$deps_dir/$dep_name.tar.gz" -C "$deps_dir"; then
+            if ! tar -xvf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir"; then
                 echo "❌ Ошибка: Не удалось распаковать $dep_name"
                 continue
             fi
@@ -783,6 +805,8 @@ main() {
     mkdir -p "$PROJECT_ROOT/.buildozer/local/venv"
     
     # Директории для зависимостей и сборки
+    SYSTEM_DEPS_DIR="$PROJECT_ROOT/.buildozer/system_deps"
+    mkdir -p "$SYSTEM_DEPS_DIR"
     DEPS_DIR="$BUILDOZER_LOCAL_DIR/deps"
     BUILDOZER_DIR="$BUILDOZER_LOCAL_DIR/buildozer"
 
@@ -819,6 +843,9 @@ main() {
     # Функция для обновления конфигурационных файлов
     update_config_files() {
         info "Обновление конфигурационных файлов..."
+        
+        # Создаем директории, если они не существуют
+        mkdir -p "$PROJECT_ROOT/.buildozer/android/platform/build-arm64-v8a/dists"
         
         # Обновляем local.properties
         {

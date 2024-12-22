@@ -1,5 +1,7 @@
 # Bulldozer directory
 .buildozer/
+.local/
+local.properties
 bin/
 
 # Virtual environment
@@ -36,7 +38,3 @@ buildozer-*.log
 settings.db
 data/*.db
 
-# Локальные инструменты и зависимости
-.local/
-.gradle/
-local.properties
