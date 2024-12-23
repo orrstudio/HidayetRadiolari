@@ -35,7 +35,7 @@ class Radio:
             
             self.context = autoclass('org.kivy.android.PythonActivity').mActivity
             self.player = ExoPlayer(self.context)
-            self.data_source_factory = DefaultDataSourceFactory(self.context, "RadioKivy")
+            self.data_source_factory = DefaultDataSourceFactory(self.context, "HidayetRadiolari")
             
             self.media_item = MediaItem.fromUri(self.url)
             self.player.setMediaItem(self.media_item)

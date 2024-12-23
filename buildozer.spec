@@ -1,7 +1,7 @@
 [app]
-title = RadioKivy
-package.name = radiokivy
-package.domain = org.radiokivy
+title = HidayetRadiolari
+package.name = hidayetradiolari
+package.domain = org.orrstudio
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,txt
 source.include_patterns = radios-list.txt,assets/*
