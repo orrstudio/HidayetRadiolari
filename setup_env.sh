@@ -737,6 +737,43 @@ safe_pip_command() {
     "$VIRTUAL_ENV/bin/pip" "$@"
 }
 
+# Настройка python-for-android
+setup_p4a() {
+    info "Настройка python-for-android..."
+    
+    local P4A_DIR=".buildozer/android/platform/python-for-android"
+    
+    # Проверяем, существует ли уже директория
+    if [ -d "$P4A_DIR" ]; then
+        info "python-for-android уже установлен в $P4A_DIR"
+        return 0
+    fi
+    
+    # Создаем директорию
+    mkdir -p ".buildozer/android/platform/" || {
+        error "Не удалось создать директорию для python-for-android"
+        return 1
+    }
+    
+    # Клонируем репозиторий
+    git clone https://github.com/kivy/python-for-android.git "$P4A_DIR" || {
+        error "Не удалось клонировать репозиторий python-for-android"
+        return 1
+    }
+    
+    # Переходим в директорию и переключаемся на нужную версию
+    cd "$P4A_DIR" || return 1
+    git checkout v2024.01.21 || {
+        error "Не удалось переключиться на версию v2024.01.21"
+        cd - > /dev/null
+        return 1
+    }
+    cd - > /dev/null
+    
+    success "python-for-android успешно установлен"
+    return 0
+}
+
 # Основной процесс
 main() {
     # Определение корневой директории проекта
@@ -930,8 +967,9 @@ main() {
     # Отладка сборки Gradle
     debug_gradle
     
-    # Локализация зависимостей
-   
+    # Установка python-for-android
+    setup_p4a
+    
     success "Настройка окружения завершена успешно"
     info "Теперь вы можете запустить сборку командой: buildozer android debug"
 }
