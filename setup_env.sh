@@ -538,8 +538,6 @@ manual_system_deps() {
         "sdl2_image"
         "sdl2_mixer"
         "sdl2_ttf"
-        "gstreamer"
-        "gst-plugins-base"
     )
     
     # Путь к директории с зависимостями
@@ -559,16 +557,6 @@ manual_system_deps() {
         fi
     done
     
-    # Распаковка архива GStreamer
-    if [ -f "$deps_dir/gstreamer.tar.xz" ]; then
-        info "Устанавливаем gstreamer..."
-        tar -xvJf "$deps_dir/gstreamer.tar.xz" -C "$deps_dir" || {
-            error "Не удалось распаковать архив GStreamer"
-            return 1
-        }
-        success "Архив GStreamer успешно распакован"
-    fi
-    
     success "Системные зависимости установлены вручную"
 }
 
@@ -584,11 +572,8 @@ download_system_deps() {
     local deps=(
         "sdl2:https://libsdl.org/release/SDL2-2.28.5.tar.gz"
         "sdl2_image:https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.gz"
-        "sdl2_mixer:https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.0/SDL2_mixer-2.6.0.tar.xz"
+        "sdl2_mixer:https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.0/SDL2_mixer-2.6.0.tar.gz"
         "sdl2_ttf:https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.20.2.tar.gz"
-        "gstreamer:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gstreamer-1.0-android-universal-1.22.5.tar.xz"
-        "gst-plugins-base:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gst-plugins-base-1.0-android-universal-1.22.5.tar.xz"
-        "gst-plugins-good:https://gstreamer.freedesktop.org/data/pkg/android/1.22.5/gst-plugins-good-1.0-android-universal-1.22.5.tar.xz"
     )
     
     # Создаем директорию для зависимостей, если она не существует
@@ -613,42 +598,27 @@ download_system_deps() {
             continue
         fi
         
-        # Загрузка файла с подробной информацией с отключенной проверкой SSL
-        if ! wget --no-check-certificate -O "$deps_dir/$dep_name.tar.xz" "$dep_link"; then
+        # Определяем расширение из ссылки
+        file_ext=$(echo "$dep_link" | grep -oP '\.tar\.\K(gz|xz)')
+        if ! wget --no-check-certificate -O "$deps_dir/$dep_name.tar.$file_ext" "$dep_link"; then
             echo "❌ Ошибка: Не удалось загрузить $dep_name"
             continue
         fi
         
         # Распаковка файла
-        if [[ "$dep_name" == "gstreamer" || "$dep_name" == "gst-plugins-base" || "$dep_name" == "gst-plugins-good" || "$dep_name" == "sdl2_mixer" ]]; then
-            # Проверяем, что архив еще не распакован
-            if [ ! -d "$deps_dir/$dep_name" ]; then
-                echo "Распаковываем $dep_name: $deps_dir/$dep_name.tar.xz"
-                tar -xvJf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir" || {
-                    echo "❌ DETAILED ERROR: Код возврата $?"
-                    echo "❌ Содержимое архива:"
-                    tar -tvJf "$deps_dir/$dep_name.tar.xz"
-                    continue
-                }
-            else
-                echo "✅ $dep_name уже распакован"
-            fi
-        else
-            # Определяем тип архива
-            if [[ "$dep_link" == *".tar.gz" ]]; then
-                if ! tar -xzf "$deps_dir/$dep_name.tar.gz" -C "$deps_dir"; then
-                    echo "❌ Ошибка: Не удалось распаковать $dep_name.tar.gz"
-                    continue
-                fi
-            elif [[ "$dep_link" == *".tar.xz" ]]; then
-                if ! tar -xJf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir"; then
-                    echo "❌ Ошибка: Не удалось распаковать $dep_name.tar.xz"
-                    continue
-                fi
-            else
-                echo "❌ Неизвестный формат архива для $dep_name"
+        if [[ "$file_ext" == "gz" ]]; then
+            if ! tar -xzf "$deps_dir/$dep_name.tar.gz" -C "$deps_dir"; then
+                echo "❌ Ошибка: Не удалось распаковать $dep_name.tar.gz"
                 continue
             fi
+        elif [[ "$file_ext" == "xz" ]]; then
+            if ! tar -xJf "$deps_dir/$dep_name.tar.xz" -C "$deps_dir"; then
+                echo "❌ Ошибка: Не удалось распаковать $dep_name.tar.xz"
+                continue
+            fi
+        else
+            echo "❌ Неизвестный формат архива для $dep_name"
+            continue
         fi
         
         echo "✅ $dep_name успешно загружен и распакован"
