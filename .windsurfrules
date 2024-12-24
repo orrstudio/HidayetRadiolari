@@ -7,8 +7,8 @@
    # Не изменяй файлы без моего разрешения.
 3. Do not introduce changes and innovations without agreeing with me. 
    # Не вносите изменения и инновации без моего согласия.
-4. Do not delete comments in the code under any circumstances. 
-   # Не удаляй комментарии в коде во всех случаях.
+4. Do not delete comments in the code. 
+   # Не удаляй комментарии в коде.
 5. Do not delete pieces of code, parts of code without asking me. 
    # Не удаляй части кода, части кода без моего согласия.
 6. Do not add anything to the code except what I asked you to. 
@@ -27,9 +27,5 @@
     # Я использую Arch Linux.
 13. I use Gnome. 
     # Я использую Gnome.
-14. I use Python 3.12. 
-    # Я использую Python 3.12.
-15. I use Kivy version 2.3.0
-    # Я использую Kivy версии 2.3.0
-16. I use Virtualenv. 
+14. I use Virtualenv. 
     # Я использую виртуальное окружение.
