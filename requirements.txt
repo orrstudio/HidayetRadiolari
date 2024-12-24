@@ -4,3 +4,4 @@ kivymd==1.2.0
 requests==2.32.3
 pyjnius==1.6.1
 Cython==3.0.11
+ffpyplayer==4.3.5

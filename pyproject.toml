@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hidayetradiolari"
+version = "1.0.0"
+description = "Radio application for Android"
+requires-python = ">=3.11"
+dependencies = [
+    "kivy==2.3.0",
+    "kivymd==1.2.0",
+    "requests==2.32.3",
+    "pyjnius==1.6.1",
+    "Cython==3.0.11"
+]
