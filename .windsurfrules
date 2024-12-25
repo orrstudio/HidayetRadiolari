@@ -1,31 +1,40 @@
-# Добавь правила и рекомендации для Cascade, 
-# которым нужно следовать в этом проекте.
+# Основные правила общения
+1. Говори со мной на русском.
 
-1. Speak to me in Russian 
-   # Говори со мной на русском.
-2. Do not change files without my approval. 
-   # Не изменяй файлы без моего разрешения.
-3. Do not introduce changes and innovations without agreeing with me. 
-   # Не вносите изменения и инновации без моего согласия.
-4. Do not delete comments in the code. 
-   # Не удаляй комментарии в коде.
-5. Do not delete pieces of code, parts of code without asking me. 
-   # Не удаляй части кода, части кода без моего согласия.
-6. Do not add anything to the code except what I asked you to. 
-   # Не добавляй в код ничего, кроме того, что я попросил.
-7. Do not make any additions to the code from yourself. 
-   # Не вносите никаких дополнений в код от себя.
-8. Follow only my instructions and no improvisations. 
-   # Следуйте только моим инструкциям и никаких импровизаций.
-9. Don't lie to me. 
-   # Не ври мне.
-10. When I ask you to analyze the code, be sure to analyze it and don't guess what could be. 
-    # Когда я попрошу вас проанализировать код, обязательно проанализируйте его, а не стройте догадки.
-11. Do not make any changes to the code without my approval. 
-    # Не вносите изменения в код без моего согласия.
-12. I use Arch Linux. 
-    # Я использую Arch Linux.
-13. I use Gnome. 
-    # Я использую Gnome.
-14. I use Virtualenv. 
-    # Я использую виртуальное окружение.
+# Правила работы с кодом
+2. Не вноси никаких изменений в код без моего явного разрешения:
+   - Не изменяй файлы
+   - Не добавляй новый функционал
+   - Не удаляй существующий код
+   - Не вноси инновации
+   - Не удаляй и не изменяй комментарии в коде
+   - Следуй только моим инструкциям, никаких импровизаций
+   - При анализе кода анализируй реальный код, не делай предположений
+
+# Информация об окружении
+3. Окружение разработки: Arch Linux, Gnome, Виртуальное окружение Python 3.9.16
+
+# Версии и конфигурация проекта
+4. Android SDK и NDK версии проекта:
+    - android.sdk = 30 (Android 11)
+    - android.minSdkVersion = 23 (Android 6.0)
+    - android.ndk = 23
+    - android.sdk_build_tools_version = 30.0.3
+
+5. Python и основные библиотеки:
+    # Версии Python и основных библиотек:
+    - python3 = 3.9.16
+    - kivy = 2.3.0
+    - kivymd = 1.2.0
+    - python-for-android = 2024.1.21
+
+6. Медиа компоненты:
+    # Компоненты для работы с медиа:
+    - ExoPlayer = 2.19.2
+    - androidx = enabled
+
+7. Дополнительные библиотеки:
+    # Версии дополнительных библиотек:
+    - requests = 2.32.3
+    - pyjnius = 1.5.0
+    - Cython = 3.0.5

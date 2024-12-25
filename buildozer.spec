@@ -4,41 +4,41 @@ package.name = hidayetradiolari
 package.domain = org.orrstudio
 version = 1.0
 orientation = portrait
-android.sdk = 28 # Или более новая версия
-android.minSdkVersion = 21
+android.minSdkVersion = 23
+android.api = 30
+android.minapi = 23
 android.permissions = INTERNET, ACCESS_NETWORK_STATE
 android.add_features = android.hardware.touchscreen
-android.ndk = 21 # Или более новая версия
+android.ndk_path = /home/orr/.buildozer/android/platform/android-ndk-r25b
+android.ndk = https://dl.google.com/android/repository/android-ndk-r25b-linux.zip
+android.accept_sdk_license = True
+android.accept_license = True
+android.archs = arm64-v8a, armeabi-v7a
+android.sdk_build_tools_version = 30.0.3
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
-#icon.filename = icon.png # Замените на имя вашего файла иконки
-#icon.prefix = myvideoapp_
-#splash.filename = splash.png # Замените на имя вашего файла заставки
-#splash.prefix = myvideoapp_
-requirements = python3,kivy,ffpyplayer,ffpyplayer_codecs
+source.include_exts = py,png,jpg,kv,atlas,txt
+source.include_patterns = icons/*.png,fonts/*,audio/*,images/*,radios-list.txt,assets/*
+source.exclude_patterns = **/*unittest*.py,**/*test*.py
+icon.filename = icons/icon.png
+icon.prefix = hidayetradiolari_
+splash.filename = icons/presplash.png
+splash.prefix = hidayetradiolari_
+requirements = python3==3.9.16,kivy==2.3.0,kivymd==1.2.0,requests==2.32.3,pyjnius==1.5.0,Cython==3.0.5,python-for-android==2024.1.21
+
+# Java и Gradle настройки
+android.gradle_dependencies = com.google.android.exoplayer:exoplayer:2.19.2
+android.enable_androidx = True
+android.gradle_version = 7.3.3
+android.gradle_plugin = 7.0.4
+android.java_version = 17
+android.java_home = /usr/lib/jvm/java-17-openjdk
+android.gradle_java_home = /usr/lib/jvm/java-17-openjdk
 
 [buildozer]
 log_level = 2
-app_dir = .
+warn_on_root = 1
 
 [release]
 name = HidayetRadiolari
 version = 1.0
-android.release_mode = debug 
-"""
-Когда установлено значение debug, это означает, 
-что приложение будет собрано в отладочном режиме. 
-В отладочном режиме: 
-- Включаются дополнительные отладочные символы, 
-- Отключена оптимизация, 
-- Включены расширенные логи и возможности отладки, 
-- Размер приложения обычно больше, 
-- Производительность ниже, чем в релизной версии. 
-Это полезно при разработке и тестировании приложения, 
-так как позволяет легче находить и диагностировать 
-ошибки. 
-Когда вы будете готовы выпустить финальную версию 
-приложения, вам нужно будет изменить это значение 
-на 'release', чтобы получить оптимизированную версию 
-приложения.
-"""
+android.release_mode = debug
