@@ -23,15 +23,14 @@ icon.filename = icons/icon.png
 icon.prefix = hidayetradiolari_
 splash.filename = icons/presplash.png
 splash.prefix = hidayetradiolari_
-requirements = python3==3.9.16,kivy==2.3.0,kivymd==1.2.0,requests==2.32.3,pyjnius==1.5.0,Cython==3.0.5,python-for-android==2024.1.21
+requirements = python3==3.9.16,kivy==2.3.0,kivymd==1.2.0,requests==2.32.3,pyjnius==1.5.0,Cython==3.0.5,python-for-android==2024.1.21,plyer==2.1.0
 
 # Java и Gradle настройки
-android.gradle_dependencies = com.google.android.exoplayer:exoplayer:2.19.2
 android.enable_androidx = True
-android.gradle_version = 7.3.3
-android.gradle_plugin = 7.0.4
 android.java_version = 17
 android.java_home = /usr/lib/jvm/java-17-openjdk
+android.gradle_version = 8.0
+android.gradle_plugin = 8.0
 android.gradle_java_home = /usr/lib/jvm/java-17-openjdk
 
 [buildozer]

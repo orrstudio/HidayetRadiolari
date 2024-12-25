@@ -10,6 +10,8 @@ setup(
         'requests==2.32.3',
         'pyjnius==1.5.0',
         'plyer==2.1.0',
+        'Cython==3.0.5',
+        'python-for-android==2024.1.21',
     ],
     entry_points={
         'console_scripts': [

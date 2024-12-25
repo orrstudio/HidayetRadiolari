@@ -26,15 +26,25 @@ class WebViewApp(App):
     def open_url(self, instance):
         url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         
-        # Кроссплатформенное открытие URL
         try:
-            if platform.system() == 'Darwin':  # macOS
+            if platform.system() == 'Android':
+                # Используем pyjnius для открытия URL в Android
+                from jnius import autoclass
+                PythonActivity = autoclass('org.kivy.android.PythonActivity')
+                Intent = autoclass('android.content.Intent')
+                Uri = autoclass('android.net.Uri')
+                
+                intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(Uri.parse(url))
+                current_activity = PythonActivity.mActivity
+                current_activity.startActivity(intent)
+            elif platform.system() == 'Darwin':  # macOS
                 import subprocess
                 subprocess.call(['open', url])
             elif platform.system() == 'Windows':
                 import os
                 os.startfile(url)
-            else:  # Linux, Android
+            else:  # Linux
                 webbrowser.open(url)
         except Exception as e:
             print(f"Не удалось открыть URL: {e}")
