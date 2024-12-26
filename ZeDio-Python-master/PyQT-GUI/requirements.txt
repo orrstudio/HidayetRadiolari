@@ -1,4 +1,0 @@
-pysimplegui
-requests
-pafy
-youtube_dl
