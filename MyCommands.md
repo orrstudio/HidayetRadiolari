@@ -1,35 +1,3 @@
-# Версии компонентов
-
-## Python 3.9.16
-
-## Kivy 2.3.0
-- Последняя стабильная версия
-- Полная совместимость с Python 3.9.16
-
-## KivyMD 1.2.0
-- Совместимость с Kivy 2.3.0
-
-## Requests 2.32.3
-- Полная поддержка Python 3.9.x
-
-## Pyjnius 1.5.0
-- Интеграция с Java-API Android
-- Стабильная версия для мобильной разработки
-
-## Cython 3.0.5
-- Совместимость с Python 3.9
-
-## Python-for-Android 2024.1.21
-- Поддержка Python 3.9.x
-
-## Android SDK и NDK
-
-### Android SDK 30 (Android 11)
-
-### Android minSdkVersion 23 (Android 6.0)
-
-### Android NDK r25b
-
 # Команды для ввода в ручную
 
 ## Управление виртуальным окружением Python 3.9.16:
@@ -100,11 +68,17 @@ buildozer android logcat
 # Список подключенных устройств
 adb devices
 
+# Подключение по вайфай
+adb tcpip 5555
+adb connect 192.168.1.65:5555
+
 # Установка debug-версии
-adb -s s88ls4krprwc4dof install bin/hidayetradiolari-1.0-arm64-v8a_armeabi-v7a-debug.apk
+adb -s s88ls4krprwc4dof install bin/debug.apk
+adb -s 192.168.1.65:5555 install bin/debug.apk
 
 # Просмотр всех логов приложения
 adb -s s88ls4krprwc4dof logcat | grep "python\|error\|Exception"
+adb -s 192.168.1.65:5555 logcat | grep "python\|error\|Exception"
 ```
 
 ## Отладка Android приложения:
